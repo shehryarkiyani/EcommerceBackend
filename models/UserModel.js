@@ -6,7 +6,7 @@ const UserSchema=new mongoose.Schema({
         requird:true,
         
     },
-    lasttname:{
+    lastname:{
         type:String,
         requird:true,
        
@@ -24,7 +24,32 @@ const UserSchema=new mongoose.Schema({
     password:{
         type:String,
         requird:true,
-    }
+    },
+    role:{
+        type:String,
+        default:'user'
+    },
+    cart:{
+        type:Array,
+        default:[]
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false,
+    },
+    address:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Address"
+        }
+    ],
+    wishlist:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Product"
+        }
+    ]
+
 })
 UserSchema.pre('save',async function(next){
     const salt = bcrypt.genSaltSync(10);  
@@ -32,6 +57,6 @@ UserSchema.pre('save',async function(next){
 })
 UserSchema.methods.isPasswordMatched=async function(enteredPassword){
     return await bcrypt.compare(enteredPassword,this.password)
-    
+
 }
 module.exports=mongoose.model("User",UserSchema)

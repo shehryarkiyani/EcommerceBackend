@@ -3,6 +3,7 @@ const dotenv=require('dotenv').config()
 
 const app= express()
 const authRouter=require('./routes/authRoutes')
+const userRouter=require('./routes/UserRoutes')
 const port=process.env.PORT || 3001
 const bodyParser=require('body-parser')
 const connectDb=require('./config/dbConnect')
@@ -11,6 +12,7 @@ connectDb()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use('/api/auth',authRouter)
+app.use('/api/user',userRouter)
 app.use(notFound)
 app.use(errorHandler)
 app.listen(port,()=>{
